@@ -865,4 +865,62 @@ body {
     box-shadow: none;
     border: 1px solid #ccc;
   }
+
+}
+/* ===== STICKY MINIMIZING NAVBAR ===== */
+.navbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+/* Minimized navbar state */
+.navbar.minimized {
+  padding: 0.25rem 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.navbar.minimized .nav-links {
+  padding: 0.25rem 0;
+}
+
+.navbar.minimized .nav-link {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.navbar.minimized .site-title {
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.navbar.minimized .site-tagline {
+  display: none; /* Hide tagline when minimized */
+}
+
+/* Logo section in navbar */
+.navbar .logo-section {
+  transition: all 0.3s ease;
+}
+
+.navbar.minimized .logo-section {
+  text-align: left;
+  margin-right: auto;
+}
+
+/* Container for navbar content */
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.navbar.minimized .navbar-container {
+  align-items: center;
 }
