@@ -204,4 +204,48 @@ function trackEvent(category, action, label) {
 function trackPageView(pageName) {
     console.log('Page view:', pageName);
     // Can be enhanced with Google Analytics later
+
+}
+// Sticky minimizing navbar
+function setupStickyNavbar() {
+    const navbar = document.querySelector('.navbar');
+    const header = document.querySelector('.header');
+    if (!navbar || !header) return;
+
+    let lastScrollY = window.scrollY;
+    const headerHeight = header.offsetHeight;
+
+    window.addEventListener('scroll', function() {
+        const currentScrollY = window.scrollY;
+        
+        // Show minimized navbar when scrolled past header
+        if (currentScrollY > headerHeight) {
+            navbar.classList.add('minimized');
+        } else {
+            navbar.classList.remove('minimized');
+        }
+
+        // Optional: Hide navbar on scroll down, show on scroll up
+        if (currentScrollY > lastScrollY && currentScrollY > headerHeight) {
+            // Scrolling down - hide navbar
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up - show navbar
+            navbar.style.transform = 'translateY(0)';
+        }
+
+        lastScrollY = currentScrollY;
+    });
+
+    // Smooth scroll to top when navbar logo is clicked
+    const logoSection = navbar.querySelector('.logo-section');
+    if (logoSection) {
+        logoSection.style.cursor = 'pointer';
+        logoSection.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
 }
