@@ -61,7 +61,7 @@ class NewsManager {
                 title: "Bomet County Launches New Dairy Farmers Support Program",
                 summary: "County government announces subsidy program for dairy farmers to boost milk production",
                 content: "The Bomet County Government has launched a comprehensive dairy farmers support program...",
-                date: "2024-01-15",
+                date: "2025-01-15",
                 category: "agriculture",
                 source: "County Agriculture Department",
                 image_url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=250&fit=crop",
@@ -72,7 +72,7 @@ class NewsManager {
                 title: "New Health Center Opens in Sotik Sub-County",
                 summary: "Modern health facility to serve over 5,000 residents",
                 content: "A new health center has been officially opened in Sotik Sub-County...",
-                date: "2024-01-14",
+                date: "2025-01-14",
                 category: "health",
                 source: "Department of Health",
                 image_url: "https://images.unsplash.com/photo-1516549655669-dfbf4e8e11d9?w=400&h=250&fit=crop",
@@ -83,7 +83,7 @@ class NewsManager {
                 title: "Market Prices for Maize and Beans This Week",
                 summary: "Current market rates show stable prices for agricultural produce",
                 content: "Market prices for agricultural produce remain stable this week...",
-                date: "2024-01-13",
+                date: "2025-01-13",
                 category: "market",
                 source: "Bomet Farmers Association",
                 image_url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop",
@@ -317,4 +317,5 @@ class NewsManager {
 // Initialize news manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     window.newsManager = new NewsManager();
+
 });
