@@ -1,4 +1,4 @@
-// js/app.js - Core application functionality
+// js/app.js - Core application functionality with all scrolling features
 
 // Global state
 const AppState = {
@@ -25,6 +25,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup contact tracking
     setupContactTracking();
     
+    // Setup sticky minimizing navbar
+    setupStickyNavbar();
+    
+    // Setup scroll buttons
+    setupScrollButtons();
+    
+    // Setup horizontal scroll
+    setupHorizontalScroll();
+    
     console.log('Bomet County Hub - Ready!');
 });
 
@@ -32,10 +41,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeServiceWorker() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/js/service-worker.js')
-            .then(registration => {
+            .then(function(registration) {
                 console.log('ServiceWorker registered: ', registration);
             })
-            .catch(error => {
+            .catch(function(error) {
                 console.log('ServiceWorker registration failed: ', error);
             });
     }
@@ -45,10 +54,12 @@ function initializeServiceWorker() {
 function setupNavigation() {
     const navLinks = document.querySelectorAll('.nav-link');
     
-    navLinks.forEach(link => {
+    navLinks.forEach(function(link) {
         link.addEventListener('click', function(e) {
             // Update active state
-            navLinks.forEach(nav => nav.classList.remove('active'));
+            navLinks.forEach(function(nav) {
+                nav.classList.remove('active');
+            });
             this.classList.add('active');
             
             // Update app state
@@ -73,7 +84,7 @@ function setupLoadingStates() {
     
     // Remove loading class when everything is ready
     window.addEventListener('load', function() {
-        setTimeout(() => {
+        setTimeout(function() {
             document.body.classList.remove('loading');
         }, 500);
     });
@@ -83,11 +94,139 @@ function setupLoadingStates() {
 function setupContactTracking() {
     // Track contact method clicks
     const contactButtons = document.querySelectorAll('.contact-btn');
-    contactButtons.forEach(btn => {
+    contactButtons.forEach(function(btn) {
         btn.addEventListener('click', function(e) {
             const contactType = this.textContent.toLowerCase();
             // Simple tracking - can be enhanced later
             console.log('Contact method clicked:', contactType);
+        });
+    });
+}
+
+// Sticky minimizing navbar
+function setupStickyNavbar() {
+    const navbar = document.querySelector('.navbar');
+    const header = document.querySelector('.header');
+    if (!navbar || !header) return;
+
+    let lastScrollY = window.scrollY;
+    const headerHeight = header.offsetHeight;
+
+    window.addEventListener('scroll', function() {
+        const currentScrollY = window.scrollY;
+        
+        // Show minimized navbar when scrolled past header
+        if (currentScrollY > headerHeight) {
+            navbar.classList.add('minimized');
+        } else {
+            navbar.classList.remove('minimized');
+        }
+
+        // Optional: Hide navbar on scroll down, show on scroll up
+        if (currentScrollY > lastScrollY && currentScrollY > headerHeight) {
+            // Scrolling down - hide navbar
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up - show navbar
+            navbar.style.transform = 'translateY(0)';
+        }
+
+        lastScrollY = currentScrollY;
+    });
+
+    // Smooth scroll to top when navbar logo is clicked
+    const logoSection = navbar.querySelector('.logo-section');
+    if (logoSection) {
+        logoSection.style.cursor = 'pointer';
+        logoSection.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
+
+// Scroll buttons functionality
+function setupScrollButtons() {
+    const scrollToTopBtn = document.querySelector('.scroll-to-top');
+    const scrollToBottomBtn = document.querySelector('.scroll-to-bottom');
+    
+    if (!scrollToTopBtn || !scrollToBottomBtn) return;
+
+    // Show/hide scroll to top button
+    window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY;
+        const viewportHeight = window.innerHeight;
+        const totalHeight = document.documentElement.scrollHeight;
+        
+        // Show scroll to top when scrolled down 300px
+        if (scrolled > 300) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
+        
+        // Show scroll to bottom when not at bottom
+        if (scrolled + viewportHeight < totalHeight - 100) {
+            scrollToBottomBtn.classList.add('visible');
+        } else {
+            scrollToBottomBtn.classList.remove('visible');
+        }
+    });
+
+    // Scroll to top functionality
+    scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Scroll to bottom functionality
+    scrollToBottomBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// Horizontal scroll functionality
+function setupHorizontalScroll() {
+    const horizontalSections = document.querySelectorAll('.horizontal-scroll-section');
+    
+    horizontalSections.forEach(function(section) {
+        const container = section.querySelector('.horizontal-scroll-container');
+        const indicators = section.querySelectorAll('.scroll-indicator');
+        
+        if (!container || !indicators.length) return;
+        
+        // Update indicators on scroll
+        section.addEventListener('scroll', function() {
+            const scrollPercentage = (section.scrollLeft / (container.scrollWidth - section.clientWidth)) * 100;
+            
+            indicators.forEach(function(indicator, index) {
+                const indicatorStart = (index / indicators.length) * 100;
+                const indicatorEnd = ((index + 1) / indicators.length) * 100;
+                
+                if (scrollPercentage >= indicatorStart && scrollPercentage < indicatorEnd) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        });
+        
+        // Click indicators to scroll
+        indicators.forEach(function(indicator, index) {
+            indicator.addEventListener('click', function() {
+                const scrollPosition = (index / indicators.length) * (container.scrollWidth - section.clientWidth);
+                section.scrollTo({
+                    left: scrollPosition,
+                    behavior: 'smooth'
+                });
+            });
         });
     });
 }
@@ -106,7 +245,7 @@ function formatDate(dateString) {
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
-        const later = () => {
+        const later = function() {
             clearTimeout(timeout);
             func(...args);
         };
@@ -115,8 +254,9 @@ function debounce(func, wait) {
     };
 }
 
-// Simple notification function (fixed version)
-function showNotification(message, type = 'info') {
+// Simple notification function
+function showNotification(message, type) {
+    if (type === void 0) { type = 'info'; }
     // Remove existing notifications
     const existingNotification = document.querySelector('.notification');
     if (existingNotification) {
@@ -204,85 +344,4 @@ function trackEvent(category, action, label) {
 function trackPageView(pageName) {
     console.log('Page view:', pageName);
     // Can be enhanced with Google Analytics later
-
 }
-// Sticky minimizing navbar
-function setupStickyNavbar() {
-    const navbar = document.querySelector('.navbar');
-    const header = document.querySelector('.header');
-    if (!navbar || !header) return;
-
-    let lastScrollY = window.scrollY;
-    const headerHeight = header.offsetHeight;
-
-    window.addEventListener('scroll', function() {
-        const currentScrollY = window.scrollY;
-        
-        // Show minimized navbar when scrolled past header
-        if (currentScrollY > headerHeight) {
-            navbar.classList.add('minimized');
-        } else {
-            navbar.classList.remove('minimized');
-        }
-
-        // Optional: Hide navbar on scroll down, show on scroll up
-        if (currentScrollY > lastScrollY && currentScrollY > headerHeight) {
-            // Scrolling down - hide navbar
-            navbar.style.transform = 'translateY(-100%)';
-        } else {
-            // Scrolling up - show navbar
-            navbar.style.transform = 'translateY(0)';
-        }
-
-        lastScrollY = currentScrollY;
-    });
-
-    // Smooth scroll to top when navbar logo is clicked
-    const logoSection = navbar.querySelector('.logo-section');
-    if (logoSection) {
-        logoSection.style.cursor = 'pointer';
-        logoSection.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
-}
-// DOM Content Loaded
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Bomet County Hub - Initializing...');
-    
-    // Initialize service worker for offline functionality
-    initializeServiceWorker();
-    
-    // Set up navigation
-    setupNavigation();
-    
-    // Set up current year in footer
-    setCurrentYear();
-    
-    // Add loading states
-    setupLoadingStates();
-    
-    // Setup contact tracking
-    setupContactTracking();
-    
-    // Setup sticky minimizing navbar  ← ADD THIS LINE
-    setupStickyNavbar();
-    
-    console.log('Bomet County Hub - Ready!');
-});
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Bomet County Hub - Initializing...');
-    
-    // ... existing code ...
-    
-    // Setup scroll buttons and horizontal scroll ← ADD THESE
-    setupScrollButtons();
-    setupHorizontalScroll();
-    
-    console.log('Bomet County Hub - Ready!');
-});
-
-
