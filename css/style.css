@@ -924,3 +924,31 @@ body {
 .navbar.minimized .navbar-container {
   align-items: center;
 }
+/* Minimized logo styles */
+.minimized-logo {
+  display: none;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.navbar.minimized .minimized-logo {
+  display: block;
+}
+
+/* Ensure proper spacing */
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.navbar.minimized .navbar-container {
+  justify-content: space-between;
+}
+
+/* Smooth transitions for all elements */
+.navbar * {
+  transition: all 0.3s ease;
+}
+
