@@ -273,4 +273,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Bomet County Hub - Ready!');
 });
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Bomet County Hub - Initializing...');
+    
+    // ... existing code ...
+    
+    // Setup scroll buttons and horizontal scroll ← ADD THESE
+    setupScrollButtons();
+    setupHorizontalScroll();
+    
+    console.log('Bomet County Hub - Ready!');
+});
+
 
