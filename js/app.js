@@ -249,3 +249,28 @@ function setupStickyNavbar() {
         });
     }
 }
+// DOM Content Loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Bomet County Hub - Initializing...');
+    
+    // Initialize service worker for offline functionality
+    initializeServiceWorker();
+    
+    // Set up navigation
+    setupNavigation();
+    
+    // Set up current year in footer
+    setCurrentYear();
+    
+    // Add loading states
+    setupLoadingStates();
+    
+    // Setup contact tracking
+    setupContactTracking();
+    
+    // Setup sticky minimizing navbar  ← ADD THIS LINE
+    setupStickyNavbar();
+    
+    console.log('Bomet County Hub - Ready!');
+});
+
