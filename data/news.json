@@ -67,5 +67,17 @@
       "image_url": "https://images.unsplash.com/photo-1592210454359-9043f067919b?w=400&h=250&fit=crop",
       "important": true
     }
+     {
+      "id": 2,
+      "title": "New news plartform launched",
+      "summary": "A digital facility has been officially launched today to serve over 10,000 bomet county members",
+      "content": "A new plartform has been officially opened in Bomet County, bringing essential news services closer to over 10,000 residents. The plartform offers latest trending news to ensure every resident living in the county accesses news. The plartform will operate 24/7 with trained personels.",
+      "date": "2025-11-22",
+      "category": "health",
+      "source": "Department of Health",
+      "image_url": "https://images.unsplash.com/photo-1516549655669-dfbf4e8e11d9?w=400&h=250&fit=crop",
+      "important": false
+    },
   ]
 }
+
